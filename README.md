@@ -8,6 +8,8 @@ in `./app/page.tsx` you can find a visual representation
 - shadcn/ui
 - crypto-js
 - typescript
+- react-copy-to-clipboard
+- hamburger-react
 
 
 ## To start the project
