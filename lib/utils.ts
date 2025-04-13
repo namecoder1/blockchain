@@ -17,4 +17,24 @@ const formatDate = (date: Date): string => {
   return `${hours}:${minutes}:${seconds}-${month}/${day}/${year}`;
 };
 
-export default formatDate
+const formatNumber = (amount: number, currency: string) => {
+  // Se il numero è intero e minore di 100, non mostrare decimali
+  if (Number.isInteger(amount) && amount < 100) {
+    const formatter = new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency,
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0
+    });
+    return formatter.format(amount);
+  }
+  
+  // Per numeri più grandi, mantieni il formato originale con decimali
+  const formatter = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency,
+  });
+  return formatter.format(amount);
+};
+
+export { formatDate, formatNumber }

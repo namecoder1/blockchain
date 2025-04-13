@@ -4,31 +4,36 @@ import { Block, Blockchain } from "@/lib/blockchain/main";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import formatDate from "@/lib/utils";
+import { formatDate } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
-import { AlertCircle, CheckCircle, Plus } from "lucide-react";
-import { Alert, AlertDescription } from "@/components/ui/alert";
+import { AlertCircle, CheckCircle } from "lucide-react";
+import { AlertDescription } from "@/components/ui/alert";
+import { Label } from "@/components/ui/label";
+import AddressList from "@/components/block/address-list";
+import BlockchainBlock from "@/components/block/block";
 
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+const addresses = [
+  '1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa',
+  '18h23j0dye2e082y3dfhd383h03hof323w',
+  '038y3e2ts2uy10e2y9edg287du09nz2y2g'
+]
+
+
+const btcAddress = '1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa'
 
 export default function Home() {
   const [blockchain, setBlockchain] = useState(new Blockchain());
   const [formData, setFormData] = useState({
     amount: '',
-    currency: 'usd' as 'usd' | 'eur' | 'gbp',
+    senderAddress: btcAddress,
+    receiverAddress: '',
   });
 
   const addAction = (e: React.FormEvent) => {
     e.preventDefault();
 
     // Validazione del form
-    if (!formData.amount || !formData.currency) {
+    if (!formData.amount || !formData.receiverAddress) {
       alert("Please fill in all fields.");
       return;
     }
@@ -37,43 +42,39 @@ export default function Home() {
     const formattedDate = formatDate(now);
 
     const newBlock = new Block(formattedDate, {
-      amount: formData.amount,
-      currency: formData.currency,
+      senderAddress: formData.senderAddress,
+      receiverAddress: formData.receiverAddress,
+      amount: parseFloat(formData.amount),
     });
 
+    // Non minare il blocco qui, verrà fatto in addBlock
     blockchain.addBlock(newBlock);
+    
+    // Aggiorna lo stato React con una nuova istanza di blockchain
+    setBlockchain(new Blockchain(blockchain.chain));
 
-    setFormData({ amount: '', currency: 'usd' }); // Resetta il form
-  };
-
-  const getCurrencySymbol = (currency: string) => {
-    switch(currency) {
-      case 'usd': return '$';
-      case 'eur': return '€';
-      case 'gbp': return '£';
-      default: return '';
-    }
+    setFormData({ amount: '', senderAddress: btcAddress, receiverAddress: ''}); // Resetta il form
   };
 
   return (
-    <div className="px-4 mx-auto py-8 max-w-4xl">
-      <h1 className="text-3xl font-bold mb-8 text-center">Blockchain Visualizer</h1>
-      
+    <div className="w-full py-8">
       {blockchain.checkValid() ? (
-        <div className="mb-8 p-3 rounded-lg border-2 bg-green-50 border-green-200 flex items-center gap-2">
+        <div className="mb-8 p-3 rounded-3xl border-2 bg-green-50 border-green-200 flex items-center gap-2">
           <CheckCircle className="h-4 w-4 text-green-600" />
           <AlertDescription className="text-green-600 font-medium">
             Blockchain is valid and secure
           </AlertDescription>
         </div>
       ) : (
-        <div className="mb-8 p-3 rounded-lg border-2 bg-red-50 border-red-200 flex items-center gap-2">
+        <div className="mb-8 p-3 rounded-3xl border-2 bg-red-50 border-red-200 flex items-center gap-2">
           <AlertCircle className="h-5 w-5 text-red-600" />
           <AlertDescription className="text-red-600 font-medium">
             Blockchain integrity compromised
           </AlertDescription>
         </div>
       )}
+
+      <AddressList addresses={addresses} />
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <Card className="md:col-span-2">
@@ -92,22 +93,7 @@ export default function Home() {
               </div>
             ) : (
               blockchain.chain.slice(1).map((block, index) => (
-                <div key={index} className="mb-4 p-4 border rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors">
-                  <div className="flex justify-between items-start mb-2">
-                    <Badge variant="secondary" className="mb-2">Block #{block.index}</Badge>
-                    <span className="text-sm text-gray-500">{block.timestamp}</span>
-                  </div>
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-xl font-bold">
-                      {getCurrencySymbol(block.data.currency)}{block.data.amount}
-                    </span>
-                    <Badge>{block.data.currency.toUpperCase()}</Badge>
-                  </div>
-                  <div className="mt-3 pt-3 border-t border-dashed">
-                    <p className="text-xs text-gray-500 truncate"><span className="font-medium">Hash:</span> {block.hash}</p>
-                    <p className="text-xs text-gray-500 truncate"><span className="font-medium">Prev:</span> {block.previousHash}</p>
-                  </div>
-                </div>
+                <BlockchainBlock key={index} block={block} />
               ))
             )}
           </CardContent>
@@ -118,55 +104,45 @@ export default function Home() {
             <CardTitle>Add Transaction</CardTitle>
           </CardHeader>
           <CardContent>
-            <form
-              onSubmit={addAction}
-              className="flex flex-col gap-4"
-            >
-              <div>
-                <label htmlFor="data_amount" className="block text-sm font-medium mb-1">
-                  Amount
-                </label>
-                <Input
-                  type="number"
-                  value={formData.amount}
-                  onChange={(e) =>
-                    setFormData({ ...formData, amount: e.target.value })
-                  }
-                  id="data_amount"
-                  placeholder="Enter amount"
-                  required
-                  className="w-full"
-                />
-              </div>
-              
-              <div>
-                <label htmlFor="currency" className="block text-sm font-medium mb-1">
-                  Currency
-                </label>
-                <Select
-                  onValueChange={(value) =>
-                    setFormData({ ...formData, currency: value as 'usd' | 'eur' | 'gbp' })
-                  }
-                  value={formData.currency}
-                >
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Select currency" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="eur">Euro (€)</SelectItem>
-                    <SelectItem value="usd">US Dollar ($)</SelectItem>
-                    <SelectItem value="gbp">British Pound (£)</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              
-              <Button
-                type="submit"
-                className="mt-3 w-full"
-              >
-                <Plus className="mr-2 h-4 w-4" /> Add Transaction
-              </Button>
-            </form>
+          <form onSubmit={addAction} className="flex flex-col gap-4">
+            <div>
+              <Label htmlFor="receiverAddress">
+                Receiver Address
+              </Label>
+              <Input
+                type="text"
+                value={formData.receiverAddress}
+                onChange={(e) =>
+                  setFormData({ ...formData, receiverAddress: e.target.value })
+                }
+                id="receiverAddress"
+                placeholder="Enter receiver address"
+                required
+                className="w-full"
+              />
+            </div>
+
+            <div>
+              <Label htmlFor="data_amount">
+                Amount
+              </Label>
+              <Input
+                type="number"
+                value={formData.amount}
+                onChange={(e) =>
+                  setFormData({ ...formData, amount: e.target.value })
+                }
+                id="data_amount"
+                placeholder="Enter amount"
+                required
+                className="w-full"
+              />
+            </div>
+
+            <Button type="submit" className="mt-3 w-full">
+              Add Transaction
+            </Button>
+          </form>
           </CardContent>
         </Card>
       </div>
