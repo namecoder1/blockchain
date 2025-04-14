@@ -20,7 +20,7 @@ const IntroductionPage = () => {
 							<li>Timestamp - When the block was created</li>
 							<li>Transactions - Array of transaction data (max 10 per block)</li>
 							<li>Previous Hash - Hash of the previous block</li>
-							<li>Hash - Current block's hash using SHA256</li>
+							<li>Hash - Current block&apos;s hash using SHA256</li>
 							<li>Nonce - Used for mining</li>
 							<li>Fee - Transaction fee for the block</li>
 						</ul>
