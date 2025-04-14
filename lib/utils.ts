@@ -18,12 +18,12 @@ const formatDate = (date: Date): string => {
   return `${hours}:${minutes}:${seconds}-${month}/${day}/${year}`;
 };
 
-const formatNumber = (amount: number, currency: string) => {
+const formatNumber = (amount: number, currency: string, maxDecimals: number = 4) => {
   // Format the number with appropriate decimal places
   const formatter = new Intl.NumberFormat('en-US', {
     style: 'decimal',
     minimumFractionDigits: Number.isInteger(amount) && amount < 100 ? 0 : 2,
-    maximumFractionDigits: 4  // Limit to 4 decimal places for large numbers like BTC
+    maximumFractionDigits: maxDecimals  // Limit to 4 decimal places for large numbers like BTC
   });
   
   // Return the formatted number followed by the currency code
@@ -32,7 +32,7 @@ const formatNumber = (amount: number, currency: string) => {
 
 const formatAddress = (address: string): string => {
   if (!address) return '...';
-  return `${address.substring(0, 12)}...${address.substring(address.length - 4)}`;
+  return `${address.substring(0, 8)}...${address.substring(address.length - 4)}`;
 }
 
 export { formatDate, formatNumber, formatAddress }

@@ -134,7 +134,7 @@ export default function Home() {
               </div>
               <div>
                 <span className="block text-lg font-semibold">Wallet Balances</span>
-                <span className="text-xs text-gray-500">Current exchange rate: 1 BTC ≈ {formatNumber(btcPrice || 0, 'EUR')}</span>
+                <span className="text-xs text-gray-500">Current exchange rate: 1 BTC ≈ {formatNumber(btcPrice || 0, 'EUR', 2)}</span>
               </div>
             </CardTitle>
           </CardHeader>
@@ -149,8 +149,8 @@ export default function Home() {
                   <ResponsiveAddress address={user1.address} className="font-mono text-xs bg-blue-100 w-fit py-1 px-2 rounded-3xl" />
                 </div>
                 <div className="flex flex-col items-end mt-1 sm:mt-0">
-                  <span className="font-bold text-sm text-blue-700">{formatNumber(blockchain.getBalance(user1.address), 'BTC')}</span>
-                  <span className="text-xs text-gray-500">≈ {formatNumber(blockchain.getBalance(user1.address) * (btcPrice || 0), 'EUR')}</span>
+                  <span className="font-bold text-sm text-blue-700">{formatNumber(blockchain.getBalance(user1.address), 'BTC', 2)}</span>
+                  <span className="text-[10px] sm:text-xs text-gray-500">≈ {formatNumber(blockchain.getBalance(user1.address) * (btcPrice || 0), 'EUR', 2)}</span>
                 </div>
               </div>
               
@@ -163,8 +163,8 @@ export default function Home() {
                   <ResponsiveAddress address={user2.address} className="font-mono text-xs bg-gray-200 py-1 px-2 rounded-3xl" toCopy={true} />
                 </div>
                 <div className="flex flex-col items-end mt-1 sm:mt-0">
-                  <span className="font-bold text-sm text-gray-700">{formatNumber(blockchain.getBalance(user2.address), 'BTC')}</span>
-                  <span className="text-xs text-gray-500">≈ {formatNumber(blockchain.getBalance(user2.address) * (btcPrice || 0), 'EUR')}</span>
+                  <span className="font-bold text-sm text-gray-700">{formatNumber(blockchain.getBalance(user2.address), 'BTC', 2)}</span>
+                  <span className="text-[10px] sm:text-xs text-gray-500">≈ {formatNumber(blockchain.getBalance(user2.address) * (btcPrice || 0), 'EUR', 2)}</span>
                 </div>
               </div>
             </div>
@@ -269,8 +269,8 @@ export default function Home() {
                     <span className="text-sm font-medium text-gray-700">Fee</span>
                   </div>
                   <div className="flex flex-col items-end mt-1 sm:mt-0">
-                    <span className="text-sm font-semibold text-gray-900">{formatNumber(blockchain.calculateFee(parseFloat(formData.amount)), 'BTC')}</span>
-                    <span className="text-xs text-gray-500">≈ {formatNumber(blockchain.calculateFee(parseFloat(formData.amount)) * (btcPrice || 0), 'EUR')}</span>
+                    <span className="text-sm font-semibold text-gray-900">{formatNumber(blockchain.calculateFee(parseFloat(formData.amount)), 'BTC', 4)}</span>
+                    <span className="text-xs text-gray-500">≈ {formatNumber(blockchain.calculateFee(parseFloat(formData.amount)) * (btcPrice || 0), 'EUR', 2)}</span>
                   </div>
                 </div>
                 
@@ -282,8 +282,8 @@ export default function Home() {
                     <span className="text-sm font-medium text-gray-700">Net Amount</span>
                   </div>
                   <div className="flex flex-col items-end mt-1 sm:mt-0">
-                    <span className="text-sm font-semibold text-gray-900">{formatNumber(parseFloat(formData.amount) - blockchain.calculateFee(parseFloat(formData.amount)), 'BTC')}</span>
-                    <span className="text-xs text-gray-500">≈ {formatNumber((parseFloat(formData.amount) - blockchain.calculateFee(parseFloat(formData.amount))) * (btcPrice || 0), 'EUR')}</span>
+                    <span className="text-sm font-semibold text-gray-900">{formatNumber(parseFloat(formData.amount) - blockchain.calculateFee(parseFloat(formData.amount)), 'BTC', 4)}</span>
+                    <span className="text-xs text-gray-500">≈ {formatNumber((parseFloat(formData.amount) - blockchain.calculateFee(parseFloat(formData.amount))) * (btcPrice || 0), 'EUR', 2)}</span>
                   </div>
                 </div>
               </div>
