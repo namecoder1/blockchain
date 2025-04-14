@@ -1,3 +1,4 @@
+'use client'
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
 
@@ -18,23 +19,20 @@ const formatDate = (date: Date): string => {
 };
 
 const formatNumber = (amount: number, currency: string) => {
-  // Se il numero è intero e minore di 100, non mostrare decimali
-  if (Number.isInteger(amount) && amount < 100) {
-    const formatter = new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency,
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0
-    });
-    return formatter.format(amount);
-  }
-  
-  // Per numeri più grandi, mantieni il formato originale con decimali
+  // Format the number with appropriate decimal places
   const formatter = new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency,
+    style: 'decimal',
+    minimumFractionDigits: Number.isInteger(amount) && amount < 100 ? 0 : 2,
+    maximumFractionDigits: 4  // Limit to 4 decimal places for large numbers like BTC
   });
-  return formatter.format(amount);
+  
+  // Return the formatted number followed by the currency code
+  return `${formatter.format(amount)} ${currency}`;
 };
 
-export { formatDate, formatNumber }
+const formatAddress = (address: string): string => {
+  if (!address) return '...';
+  return `${address.substring(0, 12)}...${address.substring(address.length - 4)}`;
+}
+
+export { formatDate, formatNumber, formatAddress }

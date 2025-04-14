@@ -3,4 +3,6 @@ export type Transaction = {
 	senderAddress: string;
 	receiverAddress: string;
 	note?: string;
+	timestamp: string;
+	fee: number;
 }

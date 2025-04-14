@@ -19,7 +19,7 @@ const Navbar = () => {
 	return (
 		<nav className="flex items-center max-w-4xl w-full mx-auto justify-between bg-gray-50 border-2 border-gray-200 px-3 py-2 m-4 rounded-full">
 			<div className="flex items-center gap-2">
-				<Image src={logo} alt="logo" width={40} height={40} />
+				<Image src={logo} alt="logo" width={35} height={35} />
 				<h1 className="text-2xl font-bold bg-gradient-to-r from-orange-400 via-red-600 to-purple-600 text-transparent bg-clip-text">ts.chain</h1>
 			</div>
 			
