@@ -11,6 +11,7 @@ export class Block {
   // previousHash -> hash value of the prev. Block
   // nonce -> used by the mineBlock() to find the correct
   //	 hash to mine the block (and so to confirm it)
+  // fee -> transaction fee for the block
   index: number;
   timestamp: string;
   transactions: Transaction[];
