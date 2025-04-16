@@ -5,8 +5,8 @@ import Navbar from "@/components/block/navbar"
 import Footer from "@/components/block/footer"
 
 export const metadata: Metadata = {
-  title: "blockchain",
-  description: "my first blockchain",
+  title: "ts.chain",
+  description: "ts.chain is a blockchain builded with typescript.",
 };
 
 export default function RootLayout({
@@ -15,7 +15,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="it">
+    <html lang="en">
       <body className="flex flex-col min-h-screen">
         <div className="px-2 sm:px-4">
           <Navbar />

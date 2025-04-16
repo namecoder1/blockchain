@@ -26,7 +26,7 @@ const Navbar = () => {
 			{/* Desktop Navigation */}
 			<div className="hidden md:flex items-center gap-1">
 				<Link className="hover:bg-gray-100/70 px-4 py-2 rounded-full" href="/">Home</Link>
-				<Link className="hover:bg-gray-100/70 px-4 py-2 rounded-full" href="/learn/introduction">Learn</Link>	
+				<Link className="hover:bg-gray-100/70 px-4 py-2 rounded-full" href="/learn">Learn</Link>	
 			</div>
 			
 			{/* Mobile Navigation */}
@@ -42,7 +42,7 @@ const Navbar = () => {
 							<Link href="/" className="w-full cursor-pointer">Home</Link>
 						</DropdownMenuItem>
 						<DropdownMenuItem asChild>
-							<Link href="/learn/introduction" className="w-full cursor-pointer">Learn</Link>
+							<Link href="/learn" className="w-full cursor-pointer">Learn</Link>
 						</DropdownMenuItem>
 					</DropdownMenuContent>
 				</DropdownMenu>
